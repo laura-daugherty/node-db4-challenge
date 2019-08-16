@@ -17,7 +17,7 @@ function addRecipe(newRecipe) {
 }
 
 function updateRecipe(changes, id) {
-  return db("recipes")
+return db("recipes")
   .update(changes)
   .where({ id });
 }
