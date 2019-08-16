@@ -12,18 +12,18 @@ function getIngredients() {
   return db("ingredients")
 }
 
-function addIngredients() {
+function addIngredients(newIngredient) {
   return db("ingredients")
   .insert(newIngredient, "id")
 }
 
-function deleteIngredients() {
+function deleteIngredients(id) {
   return db("ingredients")
   .del()
   .where({ id })
 }
 
-function updateIngredients() {
+function updateIngredients(changes, id) {
   return db("ingredients")
   .update(changes)
   .where({ id })

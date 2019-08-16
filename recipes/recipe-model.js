@@ -5,6 +5,8 @@ module.exports = {
   addRecipe,
   updateRecipe,
   deleteRecipe,
+  getShoppingList,
+  getInstructions
 };
 
 function getRecipes() {
@@ -26,4 +28,18 @@ function deleteRecipe(id) {
   return db("recipes")
   .del()
   .where({id});
+}
+
+function getShoppingList(id) {
+  return db("recipes as r")
+  .innerJoin("recipes_ingredients as ri", "r.id", "=", "ri.recipe_id")
+  .innerJoin("ingredients as i", "i.id", "=", "ri.ingredient_id")
+  .select("r.name", "i.name", "ri.quantity")
+  .where({ "r.id" : id })
+}
+
+function getInstructions(id) {
+  return db("recipes")
+  .select("recipes.steps")
+  .where({ id })
 }

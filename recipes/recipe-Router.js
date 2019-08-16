@@ -1,23 +1,24 @@
 const express = require('express');
 
-const Recipes = require('./recipe-model.js.js');
+const Recipes = require('./recipe-model.js');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  try {
-    const recipes = await Recipes.getRecipes;
-    res.json(recipes);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to get recipes' });
-  }
+router.get('/', (req, res) => {
+  Recipes.getRecipes()
+  .then(ingredient => {
+    res.status(200).json(ingredient)
+  })
+  .catch(err => {
+    res.status(500).json({message: "Big ole error"})
+  }) 
 });
 
 router.post('/', (req, res) => {
   const newRecipe = req.body;
   Recipes.addRecipe(newRecipe)
   .then(recipe => {
-    res.status(200).json(recipe)
+    res.status(200).json(newRecipe)
   })
   .catch(err => {
     res.status(500).json({message: "Big ole error"})
@@ -39,6 +40,28 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const {id} = req.params;
   recipes.deleteRecipe(id)
+  .then(recipe => {
+    res.status(200).json(recipe)
+  })
+  .catch(err => {
+    res.status(500).json({message: "Big ole error"})
+  })
+})
+
+router.get("/:id/shoppingList", (req, res) => {
+  const { id } = req.params;
+  Recipes.getShoppingList(id)
+  .then(recipe => {
+    res.status(200).json(recipe)
+  })
+  .catch(err => {
+    res.status(500).json({message: "Big ole error"})
+  })
+})
+
+router.get("/:id/steps", (req, res) => {
+  const { id } = req.params;
+  Recipes.getInstructions(id)
   .then(recipe => {
     res.status(200).json(recipe)
   })
